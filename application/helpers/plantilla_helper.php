@@ -49,8 +49,34 @@
 			        <a class="nav-link" href="<?php echo site_url('home')?>">Inicio <span class="sr-only">(current)</span></a>
 			      </li>
 			    </ul>
-			    <ul class="nav navbar-nav navbar-right">
-			    	<li class="nav-item"><a class="nav-link" href="#">Cuenta</a></li>
+			    <ul class="navbar-nav">
+			    	<li class="dropdown">
+		          <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"><b>Cuenta</b> <span class="caret"></span></a>
+					<ul id="login-dp" class="dropdown-menu">
+						<li>
+							 <div class="row">
+									<div class="col-md-12">
+										Inicia sesión
+										 <form class="form" role="form" method="post" action="login" accept-charset="UTF-8" id="login-nav">
+												<div class="form-group">
+													 <label class="sr-only" for="username">Nombre de usuario</label>
+													 <input type="text" class="form-control" name="username" id="username" placeholder="Nombre de Usuario" required>
+												</div>
+												<div class="form-group">
+													 <label class="sr-only" for="password">Contraseña</label>
+													 <input type="password" class="form-control" name="password" id="password" placeholder="Password" required>
+		                                             <div class="help-block text-right"><a href="">Olvidaste la contraseña ?</a></div>
+												</div>
+												<div class="form-group">
+													 <button type="submit" class="btn btn-primary btn-block">Inicia</button>
+												</div>
+										 </form>
+									</div>
+									<div class="bottom text-center">
+										Eres nuevo ? <a href="#"><b>Unete</b></a>
+									</div>
+							 </div>
+						</li>
 			    </ul>
 			  </div>
 			</nav>
@@ -66,11 +92,23 @@
 			</div>
 			<footer style="background-color: #232F3E; color: white;">
 			    <div class="footer" id="footer" >
-			        <div class="container">
+			        <div class="container-fluid">
 			            <div class="row pt-2 pb-2">
-			                <div class="col-xs-4">
-			                	<h4 class="text-center footer-heading"><b>Contacto</b></h4>
-			                	<p class="footer-text"><i class="fa fa-phone"></i> 809-699-2487</p>
+			                <div class="col-sm-4 offset-sm-1">
+			                	<h4 class=" footer-heading"><b>Contacto</b></h4>
+			                	<ul>
+			                	<li class="footer-text"><i class="fa fa-phone"></i> 809-699-2487</li>
+			                	<li class="footer-text"><i class="fa fa-envelope"></i> zbank@gmail.com</li>
+			                	<li><a class="footer-link" href="#"><i class="fa fa-question"></i> Formulario de contacto</a></li>
+			                	</ul>
+			                </div>
+			                <div class="col-sm-4 offset-sm-2">
+			                	<h4 class="footer-heading"><b>Redes</b></h4>
+			                	<ul class="social-network social-circle">
+		                            <li><a href="#" class="rubber-hover icoFacebook" title="Facebook"><i class="fa fa-facebook"></i></a></li>
+		                            <li><a href="#" class="rubber-hover icoTwitter" title="Twitter"><i class="fa fa-twitter"></i></a></li>
+		                            <li><a href="#" class="rubber-hover icoGoogle" title="Google +"><i class="fa fa-google-plus"></i></a></li>
+			                    </ul>
 			                </div>
 			            </div>
 			            <!--/.row--> 
@@ -81,7 +119,7 @@
 			    
 			    <div class="footer-bottom" style="background-color: #131A22">
 			        <div class="container">
-			            <p class="text-center"> Copyright © Footer E-commerce Plugin 2014. All right reserved. </p>
+			            <p class="text-center"> Copyright © ZBank 2017. </p>
 			        </div>
 			    </div>
 			    <!--/.footer-bottom--> 
