@@ -29,8 +29,8 @@
 			<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
 			<!--End of animate css-->
 
-			<link type="text/css" href="<?php  echo base_url('Content')?>/css/main.css" rel="stylesheet">
-			<script type="text/javascript" src="<?php  echo base_url('Content')?>/js/script.js"></script>
+			<link type="text/css" href="<?php  echo base_url('Content')?>/css/main2.css" rel="stylesheet">
+			<script type="text/javascript" src="<?php  echo base_url('Content')?>/js/script2.js"></script>
 			<link rel="shortcut icon" href="<?php  echo base_url('Content')?>/Img/favicon.icon" type="image/x-icon">
 			<link rel="icon" href="<?php  echo base_url('Content')?>/Img/favicon.ico" type="image/x-icon">
 		</head>
@@ -50,15 +50,30 @@
 			      </li>
 			    </ul>
 			    <ul class="navbar-nav">
-			    	<li class="dropdown">
-		          <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"><b>Cuenta</b> <span class="caret"></span></a>
-					<ul id="login-dp" class="dropdown-menu">
+			    	<li class="dropdown active">
+		          <a  <?php
+		                    		$CI =& get_instance(); 
+	  								$isLoggedIn = $CI->session->userdata('isUserLoggedIn');
+	  								
+		                    		if($isLoggedIn){
+		                    			echo 'href="' . site_url('users/account') . '"  class="nav-link"';
+		                    		}else{
+		                    			echo 'id="loginactivator" href="#"  class="nav-link dropdown-toggle" data-toggle="dropdown"';
+		                    		}
+	                    		?>><i class="fa fa-user" aria-hidden="true"></i> Cuenta <span class="caret"></span></a>
+					<?php
+	                    		$CI =& get_instance(); 
+	                    		$msg = $CI->session->userdata('error_msg');
+	  							$isLoggedIn = $CI->session->userdata('isUserLoggedIn');
+		                    	if($isLoggedIn){
+		                    		
+		                    	}else{
+		                    		$attributes = array("class" => "form","name" => "loginForm", "id" => "login-nav", "role" => "form", "method" => "post", "accept-charset" => "UTF-8");
+		                    		echo'<ul id="login-dp" class="dropdown-menu">
 						<li>
 							 <div class="row">
-									<div class="col-md-12">
-										Inicia sesión
-										 <form class="form" role="form" method="post" action="login" accept-charset="UTF-8" id="login-nav">
-												<div class="form-group">
+									<div class="col-md-12">'.$msg.'
+										Inicia sesión'. form_open('users/login',$attributes).'<div class="form-group">
 													 <label class="sr-only" for="username">Nombre de usuario</label>
 													 <input type="text" class="form-control" name="username" id="username" placeholder="Nombre de Usuario" required>
 												</div>
@@ -68,15 +83,17 @@
 		                                             <div class="help-block text-right"><a href="">Olvidaste la contraseña ?</a></div>
 												</div>
 												<div class="form-group">
-													 <button type="submit" class="btn btn-primary btn-block">Inicia</button>
-												</div>
-										 </form>
-									</div>
+													 <button type="submit" name="loginSubmit" value="send"  class="btn btn-primary btn-block">Ingresa</button>
+												</div>'.form_close().'</div>
 									<div class="bottom text-center">
-										Eres nuevo ? <a href="#"><b>Unete</b></a>
+										Eres nuevo ? <a href="'.site_url('users/registration').'"><b>Unete</b></a>
 									</div>
 							 </div>
 						</li>
+			    	</ul>';
+		                    		}?>
+
+			    	</li>
 			    </ul>
 			  </div>
 			</nav>
@@ -90,7 +107,7 @@
 	?>
 			
 			</div>
-			<footer style="background-color: #232F3E; color: white;">
+			<footer class="mt-5"style="background-color: #232F3E; color: white;">
 			    <div class="footer" id="footer" >
 			        <div class="container-fluid">
 			            <div class="row pt-2 pb-2">

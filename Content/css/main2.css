@@ -2,9 +2,14 @@
 
 body{
 	font-family: 'Roboto', sans-serif;
+	background-color: #E9EBEE;
 }
 .gray-bg{
 	background-color: #F5F5F5;
+}
+
+.form-custom{
+	background:rgba(255,255,255,0.8);
 }
 
 .footer-heading{

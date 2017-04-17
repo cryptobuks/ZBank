@@ -16,11 +16,11 @@ class Users extends CI_Controller {
     public function account(){
         $data = array();
         if($this->session->userdata('isUserLoggedIn')){
-            $data['user'] = $this->user->getRows(array('id'=>$this->session->userdata('userId')));
+            $data['user'] = $this->user->getRows(array('idusuario'=>$this->session->userdata('userId')));
             //load the view
             $this->load->view('users/account', $data);
         }else{
-            redirect('users/login');
+            redirect('home');
         }
     }
     
@@ -29,6 +29,7 @@ class Users extends CI_Controller {
      */
     public function login(){
         $data = array();
+
         if($this->session->userdata('success_msg')){
             $data['success_msg'] = $this->session->userdata('success_msg');
             $this->session->unset_userdata('success_msg');
@@ -38,27 +39,27 @@ class Users extends CI_Controller {
             $this->session->unset_userdata('error_msg');
         }
         if($this->input->post('loginSubmit')){
-            $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
-            $this->form_validation->set_rules('password', 'password', 'required');
+
+            $this->form_validation->set_rules('username', 'Nombre de usuario', 'required');
+            $this->form_validation->set_rules('password', 'Contraseña', 'required');
             if ($this->form_validation->run() == true) {
                 $con['returnType'] = 'single';
                 $con['conditions'] = array(
-                    'email'=>$this->input->post('email'),
-                    'password' => md5($this->input->post('password')),
-                    'status' => '1'
+                    'nombreusuario'=>$this->input->post('username'),
+                    'contrasena' => md5($this->input->post('password'))
                 );
                 $checkLogin = $this->user->getRows($con);
                 if($checkLogin){
                     $this->session->set_userdata('isUserLoggedIn',TRUE);
-                    $this->session->set_userdata('userId',$checkLogin['id']);
+                    $this->session->set_userdata('userId',$checkLogin['idusuario']);
                     redirect('users/account/');
                 }else{
-                    $data['error_msg'] = 'Wrong email or password, please try again.';
+                    $data['error_msg'] = 'Nombre de usuario o contraseña equivocado.';
                 }
             }
         }
         //load the view
-        $this->load->view('users/login', $data);
+        $this->load->view('home/index', $data);
     }
     
     /*
@@ -68,26 +69,31 @@ class Users extends CI_Controller {
         $data = array();
         $userData = array();
         if($this->input->post('regisSubmit')){
-            $this->form_validation->set_rules('name', 'Name', 'required');
-            $this->form_validation->set_rules('email', 'Email', 'required|valid_email|callback_email_check');
-            $this->form_validation->set_rules('password', 'password', 'required');
-            $this->form_validation->set_rules('conf_password', 'confirm password', 'required|matches[password]');
+            $this->form_validation->set_rules('username', 'Nombre de usuario', 'required|callback_username_check');
+            $this->form_validation->set_rules('cedula', 'Cedula', 'required|callback_cedula_check');
+            $this->form_validation->set_rules('name', 'Nombre', 'required');
+            $this->form_validation->set_rules('email', 'Correo', 'required|valid_email|callback_email_check');
+            $this->form_validation->set_rules('password', 'Contraseña', 'required');
+            $this->form_validation->set_rules('conf_password', 'Confirmar contraseña', 'required|matches[password]');
 
             $userData = array(
-                'name' => strip_tags($this->input->post('name')),
-                'email' => strip_tags($this->input->post('email')),
-                'password' => md5($this->input->post('password')),
-                'gender' => $this->input->post('gender'),
-                'phone' => strip_tags($this->input->post('phone'))
+                'nombreusuario' => strip_tags($this->input->post('username')),
+                'cedula' => strip_tags($this->input->post('cedula')),
+                'apellido' => strip_tags($this->input->post('lastname')),
+                'nombre' => strip_tags($this->input->post('name')),
+                'correo' => strip_tags($this->input->post('email')),
+                'contrasena' => md5($this->input->post('password')),
+                'genero' => $this->input->post('gender'),
+                'telefono' => strip_tags($this->input->post('phone'))
             );
 
             if($this->form_validation->run() == true){
                 $insert = $this->user->insert($userData);
                 if($insert){
-                    $this->session->set_userdata('success_msg', 'Your registration was successfully. Please login to your account.');
-                    redirect('users/login');
+                    $this->session->set_userdata('success_msg', 'Registro completo. Inicia sesión.');
+                    redirect('home/index');
                 }else{
-                    $data['error_msg'] = 'Some problems occured, please try again.';
+                    $data['error_msg'] = 'Ocurrió un problema, Intenta de nuevo.';
                 }
             }
         }
@@ -103,7 +109,7 @@ class Users extends CI_Controller {
         $this->session->unset_userdata('isUserLoggedIn');
         $this->session->unset_userdata('userId');
         $this->session->sess_destroy();
-        redirect('users/login/');
+        redirect('home/index');
     }
     
     /*
@@ -111,13 +117,36 @@ class Users extends CI_Controller {
      */
     public function email_check($str){
         $con['returnType'] = 'count';
-        $con['conditions'] = array('email'=>$str);
+        $con['conditions'] = array('correo'=>$str);
         $checkEmail = $this->user->getRows($con);
         if($checkEmail > 0){
-            $this->form_validation->set_message('email_check', 'The given email already exists.');
+            $this->form_validation->set_message('email_check', 'El correo ya existe.');
             return FALSE;
         } else {
             return TRUE;
         }
     }
+    public function username_check($str){
+        $con['returnType'] = 'count';
+        $con['conditions'] = array('nombreusuario'=>$str);
+        $checkUsername = $this->user->getRows($con);
+        if($checkUsername > 0){
+            $this->form_validation->set_message('username_check', 'El nombre de usuario ya existe.');
+            return FALSE;
+        } else {
+            return TRUE;
+        }
+    }
+    public function cedula_check($str){
+        $con['returnType'] = 'count';
+        $con['conditions'] = array('cedula'=>$str);
+        $checkCedula = $this->user->getRows($con);
+        if($checkCedula > 0){
+            $this->form_validation->set_message('cedula_check', 'La cedula ya existe.');
+            return FALSE;
+        } else {
+            return TRUE;
+        }
+    }
+
 }
