@@ -8,6 +8,7 @@ class Users extends CI_Controller {
         parent::__construct();
         $this->load->library('form_validation');
         $this->load->model('user');
+        $this->load->model('cuenta');
     }
     
     /*
@@ -16,12 +17,19 @@ class Users extends CI_Controller {
     public function account(){
         $data = array();
         if($this->session->userdata('isUserLoggedIn')){
-            $data['user'] = $this->user->getRows(array('idusuario'=>$this->session->userdata('userId')));
+            $data['user'] = $this->user->getRows(array('id'=>$this->session->userdata('userId')));
+            $con['conditions'] = array('usuario'=>$this->session->userdata('userId'), 'ESTADO' => 2);
+            $accounts = $this->cuenta->getRows($con);
+            $data['Apaccounts'] = $accounts;
             //load the view
             $this->load->view('users/account', $data);
         }else{
             redirect('home');
         }
+    }
+
+    public function forgotten(){
+
     }
     
     /*
@@ -51,7 +59,7 @@ class Users extends CI_Controller {
                 $checkLogin = $this->user->getRows($con);
                 if($checkLogin){
                     $this->session->set_userdata('isUserLoggedIn',TRUE);
-                    $this->session->set_userdata('userId',$checkLogin['idusuario']);
+                    $this->session->set_userdata('userId',$checkLogin['IDUSUARIO']);
                     redirect('users/account/');
                 }else{
                     $data['error_msg'] = 'Nombre de usuario o contraseña equivocado.';
@@ -89,6 +97,10 @@ class Users extends CI_Controller {
 
             if($this->form_validation->run() == true){
                 $insert = $this->user->insert($userData);
+                $cuentaData = array(
+                        'usuario' => $insert
+                    );
+                $insertCuenta = $this->cuenta->insert($cuentaData);
                 if($insert){
                     $this->session->set_userdata('success_msg', 'Registro completo. Inicia sesión.');
                     redirect('home/index');

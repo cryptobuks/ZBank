@@ -1,15 +1,12 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-class User extends CI_Model{
-    function __construct() {
-        $this->userTbl = 'usuario';
+class Moneda extends CI_Model{
+ function __construct() {
+        $this->userTbl = 'moneda';
     }
-    /*
-     * get rows from the users table
-     */
-    function getRows($params = array()){
+
+        function getRows($params = array()){
         $this->db->select('*');
         $this->db->from($this->userTbl);
-        
         //fetch data by conditions
         if(array_key_exists("conditions",$params)){
 			foreach ($params['conditions'] as $key => $value) {
@@ -17,9 +14,8 @@ class User extends CI_Model{
 			}
 		}
         
-
         if(array_key_exists("id",$params)){
-            $this->db->where('idusuario',$params['id']);
+            $this->db->where('idmoneda',$params['id']);
 			$query = $this->db->get();
 			$result = $query->row_array();
         }else{
@@ -42,11 +38,8 @@ class User extends CI_Model{
         //return fetched data
         return $result;
     }
-    
-	/*
-	 * Insert user information
-	 */
-    public function insert($data = array()) {
+
+        public function insert($data = array()) {
         //insert user data to users table
         $insert = $this->db->insert($this->userTbl, $data);
         

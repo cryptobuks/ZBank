@@ -30,7 +30,7 @@
 			<!--End of animate css-->
 
 			<link type="text/css" href="<?php  echo base_url('Content')?>/css/main2.css" rel="stylesheet">
-			<script type="text/javascript" src="<?php  echo base_url('Content')?>/js/script2.js"></script>
+			<script type="text/javascript" src="<?php  echo base_url('Content')?>/js/script.js"></script>
 			<link rel="shortcut icon" href="<?php  echo base_url('Content')?>/Img/favicon.icon" type="image/x-icon">
 			<link rel="icon" href="<?php  echo base_url('Content')?>/Img/favicon.ico" type="image/x-icon">
 		</head>
@@ -44,6 +44,15 @@
 			    ZBank
 			  </a>
 			  <div class="collapse navbar-collapse" id="navbarNav">
+			  	<?php
+			        		$CI =& get_instance(); 
+	  								$isLoggedIn = $CI->session->userdata('isUserLoggedIn');
+		                    		if($isLoggedIn){
+		                    			echo '<ul class="nav navbar-nav navbar-toggler-right">
+		                    					<a class="btn btn-danger" href="'. site_url('users/logout') .'">Salir <span class="sr-only">(current)</span></a>
+		                    			</ul>';
+		                    		}
+			        	?>
 			    <ul class="navbar-nav">
 			      <li class="nav-item active">
 			        <a class="nav-link" href="<?php echo site_url('home')?>">Inicio <span class="sr-only">(current)</span></a>
@@ -97,7 +106,8 @@
 			    </ul>
 			  </div>
 			</nav>
-			<div class="container-fluid">
+			<div id="wrap">
+			<div class="container-fluid pb-5 mb-5">
 			
 		
 	<?php
@@ -107,11 +117,13 @@
 	?>
 			
 			</div>
-			<footer class="mt-5"style="background-color: #232F3E; color: white;">
-			    <div class="footer" id="footer" >
-			        <div class="container-fluid">
+			<div id="push"></div>
+			</div>
+
+			    <div class="footer " id="footer" style="background-color: #232F3E; color: white;">
+			        <div class="container">
 			            <div class="row pt-2 pb-2">
-			                <div class="col-sm-4 offset-sm-1">
+			                <div class="col-sm-4 offset-sm-2">
 			                	<h4 class=" footer-heading"><b>Contacto</b></h4>
 			                	<ul>
 			                	<li class="footer-text"><i class="fa fa-phone"></i> 809-699-2487</li>
@@ -128,19 +140,18 @@
 			                    </ul>
 			                </div>
 			            </div>
+			            <div class="row pt-2 pb-2">
+			           		<div class="col-sm-12">
+			           			<p class="text-center"> Copyright © ZBank 2017. </p>
+			           		</div>
+			            	
+			            </div>
 			            <!--/.row--> 
 			        </div>
 			        <!--/.container--> 
 			    </div>
 			    <!--/.footer-->
 			    
-			    <div class="footer-bottom" style="background-color: #131A22">
-			        <div class="container">
-			            <p class="text-center"> Copyright © ZBank 2017. </p>
-			        </div>
-			    </div>
-			    <!--/.footer-bottom--> 
-			</footer>
 		</body>
 		</html>
 	<?php
